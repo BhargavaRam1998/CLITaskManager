@@ -1,10 +1,10 @@
 package Project;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
-import static Project.TaskManager.addTask;
-import static Project.TaskManager.deleteTask;
+import static Project.TaskManager.*;
 
 public class App
 {
@@ -15,6 +15,7 @@ public class App
             System.out.println("Enter proper command");
             return;
         }
+
 
         String command = args[0];
 
@@ -38,6 +39,32 @@ public class App
                 int id = Integer.parseInt(args[1]);
 
                 deleteTask(id);
+                break;
+
+            case "update" :
+                System.out.println("Updating Task");
+
+                if (args.length < 3){
+                    System.out.println("Enter the description of the task to be updated");
+                    break;
+                }
+                int updatingTaskid = Integer.parseInt(args[1]);
+
+                String updateDescription = args[2];
+
+                updateTaskDescription(updatingTaskid, updateDescription);
+                break;
+
+            case "mark-in-progress" :
+                System.out.println("Marking task in progress");
+
+                if (args.length < 2) {
+                    System.out.println("Enter the task number of which the status to be updated");
+                }
+
+                int taskID = Integer.parseInt(args[1]);
+
+                changeTaskStatus(taskID);
                 break;
 
             default:

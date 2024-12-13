@@ -83,4 +83,52 @@ public class TaskManager {
         }
 
     }
+
+    public static void updateTaskDescription(int updatingTaskid, String updateDescription) throws IOException {
+        if (updatingTaskid <= 0) {
+            System.out.println("Please enter valid ID, The id must be a positive integer");
+            return;
+        }
+
+        Task tasktoUpdate = null;
+
+        for (Task task: tasks) {
+            if (task.getId() == updatingTaskid) {
+                tasktoUpdate = task;
+                break;
+            }
+        }
+
+        if (tasktoUpdate != null) {
+            tasktoUpdate.setDescription(updateDescription);
+            objectMapper.writeValue(new File(FILE_PATH), tasks);
+        } else {
+            System.out.println("Please enter an existing task ID");
+        }
+
+
+    }
+
+    public static void changeTaskStatus(int taskID) throws IOException {
+        if (taskID <= 0) {
+            System.out.println("Please enter valid ID, The id must be a positive integer");
+            return;
+        }
+
+        Task taskToChangeStatus = null;
+        for (Task task: tasks) {
+            if (task.getId() == taskID) {
+                taskToChangeStatus = task;
+                break;
+            }
+        }
+
+        if (taskToChangeStatus != null) {
+            taskToChangeStatus.setStatus("mark-in-progress");
+            objectMapper.writeValue(new File(FILE_PATH), tasks);
+        } else {
+            System.out.println("Please enter existing task ID");
+        }
+
+    }
 }
