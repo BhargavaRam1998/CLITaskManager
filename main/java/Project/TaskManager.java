@@ -84,8 +84,8 @@ public class TaskManager {
 
     }
 
-    public static void updateTaskDescription(int updatingTaskid, String updateDescription) throws IOException {
-        if (updatingTaskid <= 0) {
+    public static void updateTaskDescription(int updatingTaskID, String updateDescription) throws IOException {
+        if (updatingTaskID <= 0) {
             System.out.println("Please enter valid ID, The id must be a positive integer");
             return;
         }
@@ -93,7 +93,7 @@ public class TaskManager {
         Task tasktoUpdate = null;
 
         for (Task task: tasks) {
-            if (task.getId() == updatingTaskid) {
+            if (task.getId() == updatingTaskID) {
                 tasktoUpdate = task;
                 break;
             }
@@ -109,7 +109,7 @@ public class TaskManager {
 
     }
 
-    public static void changeTaskStatus(int taskID) throws IOException {
+    public static void changeTaskStatus(String command, int taskID) throws IOException {
         if (taskID <= 0) {
             System.out.println("Please enter valid ID, The id must be a positive integer");
             return;
@@ -124,11 +124,17 @@ public class TaskManager {
         }
 
         if (taskToChangeStatus != null) {
-            taskToChangeStatus.setStatus("mark-in-progress");
-            objectMapper.writeValue(new File(FILE_PATH), tasks);
+            if (command.equals("mark-in-progress")){
+                taskToChangeStatus.setStatus("In progress");
+                objectMapper.writeValue(new File(FILE_PATH), tasks);
+            } else if (command.equals("mark-done")) {
+                taskToChangeStatus.setStatus("done");
+                objectMapper.writeValue(new File(FILE_PATH), tasks);
+            }
         } else {
             System.out.println("Please enter existing task ID");
         }
 
     }
+
 }

@@ -1,7 +1,6 @@
 package Project;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static Project.TaskManager.*;
@@ -58,13 +57,23 @@ public class App
             case "mark-in-progress" :
                 System.out.println("Marking task in progress");
 
-                if (args.length < 2) {
+                if (args.length == 2) {
+                    changeStatus(command, Integer.parseInt(args[1]));
+                } else {
                     System.out.println("Enter the task number of which the status to be updated");
+                    break;
                 }
+                break;
 
-                int taskID = Integer.parseInt(args[1]);
+            case "mark-done" :
+                System.out.println("Marking task as Done");
 
-                changeTaskStatus(taskID);
+                if (args.length == 2) {
+                    changeStatus(command, Integer.parseInt(args[1]));
+                } else {
+                    System.out.println("Enter the task number of which the status to be updated");
+                    break;
+                }
                 break;
 
             default:
@@ -73,4 +82,10 @@ public class App
         }
 
     }
+
+    private static void changeStatus(String command, int taskID) throws IOException {
+
+        changeTaskStatus(command, taskID);
+    }
+
 }
