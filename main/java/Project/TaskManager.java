@@ -26,21 +26,19 @@ public class TaskManager {
 
     public static void loadTasksFromFile() {
 
-            try {
-                File file = new File(FILE_PATH);
-                if (file.exists()) {
-                    System.out.println("Loading existing tasks from file...");
-                    Task[] taskArray = objectMapper.readValue(file, Task[].class);
-                    tasks = new ArrayList<>(Arrays.asList(taskArray));
-                    System.out.println("Existing tasks loaded successfully.");
-                } else {
-                    file.createNewFile();
-                    System.out.println("File not found. Creating a new file at " + FILE_PATH);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Error loading tasks from file: " + e.getMessage());
+        try {
+            File file = new File(FILE_PATH);
+            if (file.exists()) {
+                Task[] taskArray = objectMapper.readValue(file, Task[].class);
+                tasks = new ArrayList<>(Arrays.asList(taskArray));
+            } else {
+                file.createNewFile();
+                System.out.println("File not found. Creating a new file at " + FILE_PATH);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading tasks from file: " + e.getMessage());
+        }
 
     }
 
@@ -68,7 +66,7 @@ public class TaskManager {
         }
         Task taskToRemove = null;
 
-        for (Task task: tasks){
+        for (Task task : tasks) {
             if (task.getId() == id) {
                 taskToRemove = task;
                 break;
@@ -92,7 +90,7 @@ public class TaskManager {
 
         Task tasktoUpdate = null;
 
-        for (Task task: tasks) {
+        for (Task task : tasks) {
             if (task.getId() == updatingTaskID) {
                 tasktoUpdate = task;
                 break;
@@ -116,7 +114,7 @@ public class TaskManager {
         }
 
         Task taskToChangeStatus = null;
-        for (Task task: tasks) {
+        for (Task task : tasks) {
             if (task.getId() == taskID) {
                 taskToChangeStatus = task;
                 break;
@@ -124,7 +122,7 @@ public class TaskManager {
         }
 
         if (taskToChangeStatus != null) {
-            if (command.equals("mark-in-progress")){
+            if (command.equals("mark-in-progress")) {
                 taskToChangeStatus.setStatus("In progress");
                 objectMapper.writeValue(new File(FILE_PATH), tasks);
             } else if (command.equals("mark-done")) {
@@ -133,6 +131,39 @@ public class TaskManager {
             }
         } else {
             System.out.println("Please enter existing task ID");
+        }
+
+    }
+
+    public static void listTasks() {
+        for (Task task : tasks) {
+            System.out.println(task.getDescription());
+        }
+    }
+
+    public static void listTasksBasedonStatus(String status) {
+
+        if (status.equals("done")) {
+            // Filter tasks with status "done" and print their descriptions using streams
+            System.out.println("List of completed tasks");
+            tasks.stream()
+                    .filter(task -> "done".equals(task.getStatus()))  // Filter tasks with status "done"
+                    .map(Task::getDescription)  // Map to task descriptions
+                    .forEach(System.out::println);
+        } else if (status.equals("todo")) {
+            System.out.println("List of tasks to be completed");
+            // Filter tasks with status "done" and print their descriptions using streams
+            tasks.stream()
+                    .filter(task -> "todo".equals(task.getStatus()))  // Filter tasks with status "done"
+                    .map(Task::getDescription)  // Map to task descriptions
+                    .forEach(System.out::println);
+        } else if (status.equals("In-progress")) {
+            System.out.println("List of in progress tasks");
+            // Filter tasks with status "done" and print their descriptions using streams
+            tasks.stream()
+                    .filter(task -> "In progress".equals(task.getStatus()))  // Filter tasks with status "done"
+                    .map(Task::getDescription)  // Map to task descriptions
+                    .forEach(System.out::println);
         }
 
     }

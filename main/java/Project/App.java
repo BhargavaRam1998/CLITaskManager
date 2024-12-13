@@ -76,6 +76,21 @@ public class App
                 }
                 break;
 
+            case "list" :
+                System.out.println("List of all the tasks: ");
+
+                if (args.length < 1) {
+                    System.out.println("Enter proper command");
+                    break;
+                } else if (args.length == 1) {
+                    listTasks();
+                } else if (args.length == 2) {
+                    String status = args[1];
+                    listTasksBasedonStatus(status);
+                }
+
+                break;
+
             default:
                 System.out.println("Enter valid operation");
                 break;
